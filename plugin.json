@@ -1,0 +1,11 @@
+{
+    "id": "friendsofbotble/fob-sms-gateway",
+    "name": "SMS Gateway",
+    "namespace": "FriendsOfBotble\\Sms\\",
+    "provider": "FriendsOfBotble\\Sms\\Providers\\SmsServiceProvider",
+    "author": "Friends Of Botble",
+    "url": "https://friendsofbotble.com",
+    "version": "1.0.0",
+    "description": "Integrates SMS gateway to send messages and verify phone numbers via OTP.",
+    "minimum_core_version": "7.3.0"
+}

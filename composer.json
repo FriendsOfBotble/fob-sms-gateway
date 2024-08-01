@@ -1,0 +1,15 @@
+{
+    "name": "friendsofbotble/fob-sms-gateways",
+    "description": "Integrates SMS gateway to send messages and verify phone numbers via OTP.",
+    "type": "botble-plugin",
+    "require": {
+        "twilio/sdk": "^8.2",
+        "vonage/client": "^4.0"
+    },
+    "authors": [
+        {
+            "name": "Friend Of Botble",
+            "email": "friendsofbotble@gmail.com"
+        }
+    ]
+}
