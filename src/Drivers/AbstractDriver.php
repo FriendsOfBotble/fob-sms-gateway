@@ -13,7 +13,7 @@ abstract class AbstractDriver implements Driver
 {
     abstract protected function performSend(string $to, string $message): SmsResponse;
 
-    public function getFrom(): string
+    public function getFrom(): ?string
     {
         return Sms::getSetting('from', $this->getKey());
     }
@@ -67,11 +67,17 @@ abstract class AbstractDriver implements Driver
 
     protected function log(string $to, string $message, string $status, array $response, ?string $messageId = null): void
     {
+        $from = $this->getFrom();
+
+        if (! $from) {
+            return;
+        }
+
         SmsLog::query()->create([
             'driver' => $this->getKey(),
             'message_id' => $messageId,
             'to' => $to,
-            'from' => $this->getFrom(),
+            'from' => $from,
             'message' => $message,
             'response' => $response,
             'status' => $status,

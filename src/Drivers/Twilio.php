@@ -28,6 +28,10 @@ class Twilio extends AbstractDriver
 
     protected function performSend(string $to, string $message): SmsResponse
     {
+        if (! isset($this->client)) {
+            return new SmsResponse(success: false);
+        }
+
         $response = $this->client->messages->create($to, [
             'from' => $this->getFrom(),
             'body' => $message,
@@ -42,6 +46,10 @@ class Twilio extends AbstractDriver
 
     public function normalizePhoneNumber(string $phone): string
     {
+        if (! isset($this->client)) {
+            return new Exception('Twilio is not setup yet. Please setup credentials first.');
+        }
+
         try {
             $phoneNumber = $this->client->lookups->v2->phoneNumbers($phone)->fetch();
 

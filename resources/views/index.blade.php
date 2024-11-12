@@ -79,7 +79,7 @@
                                 <x-core::button
                                         type="submit"
                                         color="primary"
-                                        form="botble-sms-forms-{{ $driver->getKey() }}-gateway-form"
+                                        form="friends-of-botble-sms-forms-{{ $driver->getKey() }}-gateway-form"
                                 >
                                     {{ trans('plugins/sms::sms.save_button') }}
                                 </x-core::button>

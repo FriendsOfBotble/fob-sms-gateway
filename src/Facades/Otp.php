@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \FriendsOfBotble\Sms\Models\SmsOtp generate(string $identifier)
- * @method static bool verify(string $identifier, string $otp)
+ * @method static bool verify(string $identifier, string $token)
  * @method static \Carbon\Carbon getExpiryTime(string $identifier)
  *
  * @see \FriendsOfBotble\Sms\Contracts\Otp

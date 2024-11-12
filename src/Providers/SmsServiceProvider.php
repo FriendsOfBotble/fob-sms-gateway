@@ -19,6 +19,10 @@ class SmsServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        if (! class_exists('Twilio\Rest\Client')) {
+            require __DIR__ . '/../../vendor/autoload.php';
+        }
+
         $this->app->singleton(
             Factory::class,
             fn (Application $app) => new SmsManager($app)

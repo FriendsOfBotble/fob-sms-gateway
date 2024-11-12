@@ -28,6 +28,10 @@ class Nexmo extends AbstractDriver
 
     protected function performSend(string $to, string $message): SmsResponse
     {
+        if (! isset($this->client)) {
+            return new SmsResponse(success: false);
+        }
+
         $response = $this->client->sms()->send(
             new SMS($to, $this->getFrom(), $message)
         );

@@ -6,9 +6,9 @@ use FriendsOfBotble\Sms\GuardManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static string|null getGuard()
+ * @method static string getTable(string|null $guard = null)
  * @method static array getGuards()
- * @method static string getGuard()
- * @method static string getTable(?string $guard = null)
  *
  * @see \FriendsOfBotble\Sms\GuardManager
  */
