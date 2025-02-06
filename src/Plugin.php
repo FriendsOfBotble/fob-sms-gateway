@@ -13,6 +13,7 @@ class Plugin extends PluginOperationAbstract
     public static function removed(): void
     {
         Schema::dropIfExists('fob_otps');
+        Schema::dropIfExists('fob_sms_logs');
 
         $table = Guard::getTable();
 

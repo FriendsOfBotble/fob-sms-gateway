@@ -231,7 +231,13 @@ class Client implements LoggerAwareInterface
         // Disable throwing E_USER_DEPRECATED notices by default, the user can turn it on during development
         if (array_key_exists('show_deprecations', $this->options) && ($this->options['show_deprecations'] == true)) {
             set_error_handler(
-                static fn (int $errno, string $errstr, string $errfile = null, int $errline = null, array $errorcontext = null) => true,
+                static fn (
+                    int $errno,
+                    string $errstr,
+                    ?string $errfile = null,
+                    ?int $errline = null,
+                    ?array $errorcontext = null
+                ) => true,
                 E_USER_DEPRECATED
             );
         }
@@ -536,6 +542,17 @@ class Client implements LoggerAwareInterface
         }
 
         return $this->factory->get($name);
+    }
+
+    public function getDebug(): mixed
+    {
+        return $this->debug;
+    }
+
+    public function setDebug(mixed $debug): Client
+    {
+        $this->debug = $debug;
+        return $this;
     }
 
     /**

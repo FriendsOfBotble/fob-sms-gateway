@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
+        if (Schema::hasTable('fob_otps')) {
+            return;
+        }
+
         Schema::create('fob_otps', function (Blueprint $table) {
             $table->id();
             $table->string('identifier');

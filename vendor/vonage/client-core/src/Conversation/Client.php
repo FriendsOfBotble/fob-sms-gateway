@@ -30,8 +30,9 @@ class Client implements APIClient
         return $this->api;
     }
 
-    public function listConversations(ListConversationFilter $conversationFilter = null): IterableAPICollection
-    {
+    public function listConversations(
+        ?ListConversationFilter $conversationFilter = null
+    ): IterableAPICollection {
         if (!$conversationFilter) {
             $conversationFilter = new ListConversationFilter();
         }
@@ -150,6 +151,13 @@ class Client implements APIClient
         $member->fromArray($response);
 
         return $member;
+    }
+
+    public function deleteMember(string $memberId, string $conversationId): bool
+    {
+        $this->getApiResource()->delete($conversationId . '/members/' . $memberId);
+
+        return true;
     }
 
     public function createEvent(EventRequest $event): Event

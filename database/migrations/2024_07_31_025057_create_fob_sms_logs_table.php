@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
+        if (Schema::hasTable('fob_sms_logs')) {
+            return;
+        }
+
         Schema::create('fob_sms_logs', function (Blueprint $table) {
             $table->id();
             $table->string('driver');

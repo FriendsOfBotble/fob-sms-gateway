@@ -68,8 +68,8 @@ class ComposerStaticInit13af13d838e47bb4fdab93ec6c1afca8
         ),
         'Vonage\\' => 
         array (
-            0 => __DIR__ . '/..' . '/vonage/jwt/src',
-            1 => __DIR__ . '/..' . '/vonage/client-core/src',
+            0 => __DIR__ . '/..' . '/vonage/client-core/src',
+            1 => __DIR__ . '/..' . '/vonage/jwt/src',
         ),
         'Twilio\\' => 
         array (
@@ -89,8 +89,8 @@ class ComposerStaticInit13af13d838e47bb4fdab93ec6c1afca8
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
