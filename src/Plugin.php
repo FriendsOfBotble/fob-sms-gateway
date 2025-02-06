@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 
 class Plugin extends PluginOperationAbstract
 {
-    public static function removed(): void
+    public static function remove(): void
     {
         Schema::dropIfExists('fob_otps');
         Schema::dropIfExists('fob_sms_logs');
