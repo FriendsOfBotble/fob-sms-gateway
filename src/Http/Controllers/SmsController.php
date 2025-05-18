@@ -21,13 +21,13 @@ class SmsController extends BaseController
 
     public function index(): View
     {
-        $this->pageTitle(trans('plugins/sms::sms.name'));
+        $this->pageTitle(trans('plugins/fob-sms-gateway::sms.name'));
 
-        Assets::addScriptsDirectly('vendor/core/plugins/sms/js/sms.js');
+        Assets::addScriptsDirectly('vendor/core/plugins/fob-sms-gateway/js/sms.js');
 
         $form = SmsSettingForm::create();
 
-        return view('plugins/sms::index', compact('form'));
+        return view('plugins/fob-sms-gateway::index', compact('form'));
     }
 
     public function update(SmsSettingRequest $request)
@@ -95,11 +95,11 @@ class SmsController extends BaseController
             return $this
                 ->httpResponse()
                 ->setError()
-                ->setMessage(trans('plugins/sms::sms.send_sms_failed'));
+                ->setMessage(trans('plugins/fob-sms-gateway::sms.send_sms_failed'));
         }
 
         return $this
             ->httpResponse()
-            ->setMessage(trans('plugins/sms::sms.sms_sent'));
+            ->setMessage(trans('plugins/fob-sms-gateway::sms.sms_sent'));
     }
 }

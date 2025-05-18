@@ -52,7 +52,7 @@ abstract class AbstractDriver implements Driver
 
     public function getDescription(): string
     {
-        return trans('plugins/sms::sms.gateway_description', ['name' => $this->getName()]);
+        return trans('plugins/fob-sms-gateway::sms.gateway_description', ['name' => $this->getName()]);
     }
 
     public function isEnabled(): bool

@@ -22,17 +22,17 @@ class SmsLogTable extends TableAbstract
             ->addColumns([
                 IdColumn::make(),
                 FormattedColumn::make('driver')
-                    ->label(trans('plugins/sms::sms.logs.provider'))
+                    ->label(trans('plugins/fob-sms-gateway::sms.logs.provider'))
                     ->getValueUsing(fn (FormattedColumn $column) => Sms::driver($column->getItem()->driver)->getName()),
                 Column::make('from')
-                    ->label(trans('plugins/sms::sms.logs.from')),
+                    ->label(trans('plugins/fob-sms-gateway::sms.logs.from')),
                 Column::make('to')
-                    ->label(trans('plugins/sms::sms.logs.to')),
+                    ->label(trans('plugins/fob-sms-gateway::sms.logs.to')),
                 FormattedColumn::make('message')
-                    ->label(trans('plugins/sms::sms.logs.message'))
+                    ->label(trans('plugins/fob-sms-gateway::sms.logs.message'))
                     ->limit(30),
                 StatusColumn::make()
-                    ->label(trans('plugins/sms::sms.logs.status')),
+                    ->label(trans('plugins/fob-sms-gateway::sms.logs.status')),
             ])
             ->addActions([
                 Action::make('view')

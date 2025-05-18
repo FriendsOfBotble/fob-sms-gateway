@@ -30,25 +30,25 @@ class SmsSettingForm extends SettingForm
 
         $this
             ->contentOnly()
-            ->setSectionTitle(trans('plugins/sms::sms.settings.title'))
-            ->setSectionDescription(trans('plugins/sms::sms.settings.description'))
+            ->setSectionTitle(trans('plugins/fob-sms-gateway::sms.settings.title'))
+            ->setSectionDescription(trans('plugins/fob-sms-gateway::sms.settings.description'))
             ->setValidatorClass(SmsSettingRequest::class)
             ->setUrl(route('sms.gateways.settings'))
             ->add(
                 'sms_default_driver',
                 SelectField::class,
                 SelectFieldOption::make()
-                    ->label(trans('plugins/sms::sms.settings.form.default_sms_provider'))
+                    ->label(trans('plugins/fob-sms-gateway::sms.settings.form.default_sms_provider'))
                     ->selected(Sms::getDefaultDriver())
                     ->choices(Sms::getProviders())
-                    ->helperText(trans('plugins/sms::sms.settings.form.default_sms_provider_help'))
+                    ->helperText(trans('plugins/fob-sms-gateway::sms.settings.form.default_sms_provider_help'))
             )
             ->addOpenFieldset('otp')
             ->add(
                 'fob_otp_heading',
                 LabelField::class,
                 LabelFieldOption::make()
-                    ->label(trans('plugins/sms::otp.settings.description'))
+                    ->label(trans('plugins/fob-sms-gateway::otp.settings.description'))
             )
             ->when(! Guard::getGuard(), function (FormAbstract $form) {
                 $form->add(
@@ -57,7 +57,7 @@ class SmsSettingForm extends SettingForm
                     AlertFieldOption::make()
                         ->type('warning')
                         ->content(
-                            trans('plugins/sms::otp.settings.form.setup_guard_alert')
+                            trans('plugins/fob-sms-gateway::otp.settings.form.setup_guard_alert')
                         )
                 );
             })
@@ -65,8 +65,8 @@ class SmsSettingForm extends SettingForm
                 'fob_otp_guard',
                 RadioField::class,
                 RadioFieldOption::make()
-                    ->label(trans('plugins/sms::otp.settings.form.guard'))
-                    ->helperText(trans('plugins/sms::otp.settings.form.guard_help'))
+                    ->label(trans('plugins/fob-sms-gateway::otp.settings.form.guard'))
+                    ->helperText(trans('plugins/fob-sms-gateway::otp.settings.form.guard_help'))
                     ->selected(setting('fob_otp_guard'))
                     ->choices(array_combine(Guard::getGuards(), Guard::getGuards()))
             )
@@ -76,15 +76,15 @@ class SmsSettingForm extends SettingForm
                         'fob_otp_expires_in',
                         NumberField::class,
                         NumberFieldOption::make()
-                            ->label(trans('plugins/sms::otp.settings.form.expires_in'))
-                            ->helperText(trans('plugins/sms::otp.settings.form.expires_in_help'))
+                            ->label(trans('plugins/fob-sms-gateway::otp.settings.form.expires_in'))
+                            ->helperText(trans('plugins/fob-sms-gateway::otp.settings.form.expires_in_help'))
                             ->value(setting('fob_otp_expires_in', 5))
                     )
                     ->add(
                         'fob_otp_phone_verification_enabled',
                         OnOffCheckboxField::class,
                         OnOffFieldOption::make()
-                            ->label(trans('plugins/sms::otp.settings.form.phone_verification'))
+                            ->label(trans('plugins/fob-sms-gateway::otp.settings.form.phone_verification'))
                             ->value(setting('fob_otp_phone_verification_enabled', false))
                     )
                     ->add(
@@ -92,16 +92,16 @@ class SmsSettingForm extends SettingForm
                         OnOffCheckboxField::class,
                         OnOffFieldOption::make()
                             ->collapsible('fob_otp_phone_verification_enabled', true, setting('fob_otp_phone_verification_enabled', false))
-                            ->label(trans('plugins/sms::otp.settings.form.requires_phone_verification'))
-                            ->helperText(trans('plugins/sms::otp.settings.form.requires_phone_verification_help'))
+                            ->label(trans('plugins/fob-sms-gateway::otp.settings.form.requires_phone_verification'))
+                            ->helperText(trans('plugins/fob-sms-gateway::otp.settings.form.requires_phone_verification_help'))
                             ->value(setting('fob_otp_requires_phone_verification', false))
                     )
                     ->add(
                         'fob_otp_message',
                         TextareaField::class,
                         TextareaFieldOption::make()
-                            ->label(trans('plugins/sms::otp.settings.form.message'))
-                            ->helperText(trans('plugins/sms::otp.settings.form.message_help'))
+                            ->label(trans('plugins/fob-sms-gateway::otp.settings.form.message'))
+                            ->helperText(trans('plugins/fob-sms-gateway::otp.settings.form.message_help'))
                             ->value(setting('fob_otp_message', 'Your OTP code is: {code}'))
                     );
             })

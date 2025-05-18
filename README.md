@@ -25,12 +25,15 @@ Botble-based applications. This plugin allows you to send SMS messages to your u
 
 ![Settings](./art/3.png)
 
+![MSG91Settings](./art/4.png)
+
 ## Supported SMS Gateways
 
 The FOB SMS Gateway plugin supports the following SMS gateways:
 
 1. [Twilio](https://www.twilio.com/)
 2. [Nexmo](https://www.nexmo.com/)
+3. [MSG91](https://msg91.com/)
 
 You can add more SMS gateways by extending the plugin.
 

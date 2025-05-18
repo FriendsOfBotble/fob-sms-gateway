@@ -47,12 +47,12 @@ class Nexmo extends AbstractDriver
 
     public function getLogo(): string
     {
-        return asset('vendor/core/plugins/sms/images/nexmo.png');
+        return asset('vendor/core/plugins/fob-sms-gateway/images/nexmo.png');
     }
 
     public function getInstructions(): string
     {
-        return view('plugins/sms::instructions.nexmo');
+        return view('plugins/fob-sms-gateway::instructions.nexmo');
     }
 
     public function getSettingForm(): FormAbstract

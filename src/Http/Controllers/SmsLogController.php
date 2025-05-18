@@ -12,23 +12,23 @@ class SmsLogController extends BaseController
 {
     protected function breadcrumb(): Breadcrumb
     {
-        return parent::breadcrumb()->add(trans('plugins/sms::sms.logs.title'), route('sms.logs.index'));
+        return parent::breadcrumb()->add(trans('plugins/fob-sms-gateway::sms.logs.title'), route('sms.logs.index'));
     }
 
     public function index(SmsLogTable $smsLogTable)
     {
-        $this->pageTitle(trans('plugins/sms::sms.logs.title'));
+        $this->pageTitle(trans('plugins/fob-sms-gateway::sms.logs.title'));
 
         return $smsLogTable->renderTable();
     }
 
     public function show(string $id)
     {
-        $this->pageTitle(trans('plugins/sms::sms.logs.detail_title', ['id' => $id]));
+        $this->pageTitle(trans('plugins/fob-sms-gateway::sms.logs.detail_title', ['id' => $id]));
 
         $smsLog = SmsLog::query()->findOrFail($id);
 
-        return view('plugins/sms::logs.show', compact('smsLog'));
+        return view('plugins/fob-sms-gateway::logs.show', compact('smsLog'));
     }
 
     public function destroy(string $id)

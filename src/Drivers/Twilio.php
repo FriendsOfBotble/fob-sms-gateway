@@ -63,12 +63,12 @@ class Twilio extends AbstractDriver
 
     public function getLogo(): string
     {
-        return asset('vendor/core/plugins/sms/images/twilio.png');
+        return asset('vendor/core/plugins/fob-sms-gateway/images/twilio.png');
     }
 
     public function getInstructions(): string
     {
-        return view('plugins/sms::instructions.twilio');
+        return view('plugins/fob-sms-gateway::instructions.twilio');
     }
 
     public function getSettingForm(): FormAbstract

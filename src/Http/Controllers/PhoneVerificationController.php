@@ -25,7 +25,7 @@ class PhoneVerificationController extends BaseController
         return Theme::scope(
             'otp.verify',
             compact('form', 'identifier', 'expiryTime'),
-            'plugins/sms::phone-verification.verify'
+            'plugins/fob-sms-gateway::phone-verification.verify'
         )->render();
     }
 

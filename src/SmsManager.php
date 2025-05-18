@@ -3,6 +3,7 @@
 namespace FriendsOfBotble\Sms;
 
 use FriendsOfBotble\Sms\Contracts\Factory;
+use FriendsOfBotble\Sms\Drivers\Msg91;
 use FriendsOfBotble\Sms\Drivers\Nexmo;
 use FriendsOfBotble\Sms\Drivers\Twilio;
 use Illuminate\Support\Collection;
@@ -20,6 +21,11 @@ class SmsManager extends BaseManager implements Factory
         return new Nexmo();
     }
 
+    public function createMsg91Driver(): Msg91
+    {
+        return new Msg91();
+    }
+
     public function getDefaultDriver(): string
     {
         return setting('fob_sms_default_driver', 'twilio');
@@ -31,6 +37,7 @@ class SmsManager extends BaseManager implements Factory
             ...$this->customCreators,
             'twilio' => fn () => $this->createTwilioDriver(),
             'nexmo' => fn () => $this->createNexmoDriver(),
+            'msg91' => fn () => $this->createMsg91Driver(),
         ];
     }
 

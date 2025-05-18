@@ -39,7 +39,7 @@ class SmsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this
-            ->setNamespace('plugins/sms')
+            ->setNamespace('plugins/fob-sms-gateway')
             ->loadAndPublishConfigurations(['permissions'])
             ->loadAndPublishTranslations()
             ->registerDashboardMenu()
@@ -64,14 +64,14 @@ class SmsServiceProvider extends ServiceProvider
                 ->registerItem([
                     'id' => 'cms-plugins-sms',
                     'priority' => 10,
-                    'name' => 'plugins/sms::sms.name',
+                    'name' => 'plugins/fob-sms-gateway::sms.name',
                     'icon' => 'ti ti-device-mobile-message',
                 ])
                 ->registerItem([
                     'id' => 'cms-plugins-sms-gateways',
                     'parent_id' => 'cms-plugins-sms',
                     'priority' => 0,
-                    'name' => 'plugins/sms::sms.name',
+                    'name' => 'plugins/fob-sms-gateway::sms.name',
                     'url' => fn () => route('sms.gateways.index'),
                     'permissions' => ['sms.gateways'],
                 ])
@@ -79,7 +79,7 @@ class SmsServiceProvider extends ServiceProvider
                     'id' => 'cms-plugins-sms-logs',
                     'parent_id' => 'cms-plugins-sms',
                     'priority' => 10,
-                    'name' => 'plugins/sms::sms.logs.title',
+                    'name' => 'plugins/fob-sms-gateway::sms.logs.title',
                     'url' => fn () => route('sms.logs.index'),
                     'permissions' => ['sms.logs'],
                 ]);

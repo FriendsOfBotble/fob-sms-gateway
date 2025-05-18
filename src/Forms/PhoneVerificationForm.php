@@ -32,7 +32,7 @@ class PhoneVerificationForm extends FormAbstract
             ->add(
                 'resend',
                 HtmlField::class,
-                HtmlFieldOption::make()->content(view('plugins/sms::phone-verification.resend'))
+                HtmlFieldOption::make()->content(view('plugins/fob-sms-gateway::phone-verification.resend'))
             )
             ->add(
                 'submit',

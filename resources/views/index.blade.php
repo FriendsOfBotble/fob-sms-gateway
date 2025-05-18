@@ -31,7 +31,7 @@
                                 data-bb-toggle="toggle-setting-form"
                                 @style(['display: none' => ! $driver->isEnabled()])
                         >
-                            {{ trans('plugins/sms::sms.configure_button') }}
+                            {{ trans('plugins/fob-sms-gateway::sms.configure_button') }}
                         </x-core::button>
                         <x-core::button
                                 type="button"
@@ -40,7 +40,7 @@
                                 :data-url="route('sms.gateways.change-status', $driver->getKey())"
                                 @style(['display: none' => $driver->isEnabled()])
                         >
-                            {{ trans('plugins/sms::sms.activate_button') }}
+                            {{ trans('plugins/fob-sms-gateway::sms.activate_button') }}
                         </x-core::button>
                     </div>
                     <div class="sms-gateway-content" style="display: none;">
@@ -62,7 +62,7 @@
                                             data-bs-target="#test-sms-modal"
                                             data-gateway="{{ $driver->getKey() }}"
                                     >
-                                        {{ trans('plugins/sms::sms.test_button') }}
+                                        {{ trans('plugins/fob-sms-gateway::sms.test_button') }}
                                     </x-core::button>
                                 </div>
                             </div>
@@ -74,14 +74,14 @@
                                         data-bb-toggle="change-status"
                                         :data-url="route('sms.gateways.change-status', $driver->getKey())"
                                 >
-                                    {{ trans('plugins/sms::sms.deactivate_button') }}
+                                    {{ trans('plugins/fob-sms-gateway::sms.deactivate_button') }}
                                 </x-core::button>
                                 <x-core::button
                                         type="submit"
                                         color="primary"
                                         form="friends-of-botble-sms-forms-{{ $driver->getKey() }}-gateway-form"
                                 >
-                                    {{ trans('plugins/sms::sms.save_button') }}
+                                    {{ trans('plugins/fob-sms-gateway::sms.save_button') }}
                                 </x-core::button>
                             </div>
                         </x-core::card.footer>
@@ -95,20 +95,20 @@
 @push('footer')
     <x-core::modal
             id="test-sms-modal"
-            :title="trans('plugins/sms::sms.test_modal.title')"
+            :title="trans('plugins/fob-sms-gateway::sms.test_modal.title')"
             :form-action="route('sms.gateways.test')"
     >
         <input type="hidden" name="gateway" value="" />
 
         <x-core::form.text-input
-                :label="trans('plugins/sms::sms.test_modal.to')"
-                :placeholder="trans('plugins/sms::sms.test_modal.to_placeholder')"
+                :label="trans('plugins/fob-sms-gateway::sms.test_modal.to')"
+                :placeholder="trans('plugins/fob-sms-gateway::sms.test_modal.to_placeholder')"
                 type="tel"
                 name="to"
         />
 
         <x-core::form.textarea
-                :label="trans('plugins/sms::sms.test_modal.message')"
+                :label="trans('plugins/fob-sms-gateway::sms.test_modal.message')"
                 name="message"
                 value="This is a test message from {{ config('app.name') }}."
                 required
@@ -125,7 +125,7 @@
                     type="submit"
                     color="primary"
             >
-                {{ trans('plugins/sms::sms.test_button') }}
+                {{ trans('plugins/fob-sms-gateway::sms.test_button') }}
             </x-core::button>
         </x-slot:footer>
     </x-core::modal>

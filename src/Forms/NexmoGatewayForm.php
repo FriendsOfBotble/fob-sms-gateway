@@ -22,25 +22,25 @@ class NexmoGatewayForm extends SmsGatewayForm
                 'key',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::nexmo.key'))
+                    ->label(trans('plugins/fob-sms-gateway::nexmo.key'))
                     ->required()
             )
             ->add(
                 'secret',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::nexmo.secret'))
+                    ->label(trans('plugins/fob-sms-gateway::nexmo.secret'))
                     ->required()
             )
             ->add(
                 'from',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::nexmo.from'))
-                    ->helperText(trans('plugins/sms::nexmo.from_help', [
+                    ->label(trans('plugins/fob-sms-gateway::nexmo.from'))
+                    ->helperText(trans('plugins/fob-sms-gateway::nexmo.from_help', [
                         'link' => Html::link(
                             'https://developer.vonage.com/en/messaging/sms/guides/custom-sender-id?source=messaging',
-                            trans('plugins/sms::nexmo.here'),
+                            trans('plugins/fob-sms-gateway::nexmo.here'),
                             ['target' => '_blank']
                         ),
                     ]))

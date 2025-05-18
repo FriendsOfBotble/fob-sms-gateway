@@ -21,22 +21,22 @@ class TwilioGatewayForm extends SmsGatewayForm
                 'sid',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::twilio.sid'))
+                    ->label(trans('plugins/fob-sms-gateway::twilio.sid'))
                     ->required()
             )
             ->add(
                 'token',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::twilio.token'))
+                    ->label(trans('plugins/fob-sms-gateway::twilio.token'))
                     ->required()
             )
             ->add(
                 'from',
                 TextField::class,
                 TextFieldOption::make()
-                    ->label(trans('plugins/sms::twilio.from'))
-                    ->helperText(trans('plugins/sms::twilio.from_help'))
+                    ->label(trans('plugins/fob-sms-gateway::twilio.from'))
+                    ->helperText(trans('plugins/fob-sms-gateway::twilio.from_help'))
                     ->required()
             );
     }

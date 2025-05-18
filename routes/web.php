@@ -2,6 +2,7 @@
 
 use Botble\Base\Facades\AdminHelper;
 use Botble\Base\Http\Middleware\DisableInDemoModeMiddleware;
+use Botble\Theme\Facades\Theme;
 use FriendsOfBotble\Sms\Facades\Guard;
 use FriendsOfBotble\Sms\Http\Controllers\PhoneVerificationController;
 use FriendsOfBotble\Sms\Http\Controllers\ResendOtpController;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 AdminHelper::registerRoutes(function () {
     Route::prefix('sms')->name('sms.')->group(function () {
-        Route::group(['prefix' => 'gateways', 'as' => 'gateways.', 'permissions' => 'sms.gateways'], function () {
+        Route::group(['prefix' => 'gateways', 'as' => 'gateways.', 'permissions' => 'fob-sms-gateway.index'], function () {
             Route::get('/', [SmsController::class, 'index'])->name('index');
 
             Route::middleware(DisableInDemoModeMiddleware::class)->group(function () {
@@ -24,7 +25,7 @@ AdminHelper::registerRoutes(function () {
             });
         });
 
-        Route::group(['prefix' => 'logs', 'as' => 'logs.', 'permissions' => 'sms.logs'], function () {
+        Route::group(['prefix' => 'logs', 'as' => 'logs.', 'permissions' => 'fob-sms-gateway.logs'], function () {
             Route::match(['GET', 'POST'], '/', [SmsLogController::class, 'index'])->name('index');
             Route::get('{id}', [SmsLogController::class, 'show'])->name('show');
             Route::delete('{id}', [SmsLogController::class, 'destroy'])->name('destroy');

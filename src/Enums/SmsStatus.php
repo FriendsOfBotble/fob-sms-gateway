@@ -13,7 +13,7 @@ class SmsStatus extends Enum
 
     public const FAILED = 'failed';
 
-    protected static $langPath = 'plugins/sms::sms.enums.log_statuses';
+    protected static $langPath = 'plugins/fob-sms-gateway::sms.enums.log_statuses';
 
     public function toHtml(): string
     {
