@@ -45,7 +45,7 @@ class SmsManager extends BaseManager implements Factory
     {
         return collect(array_keys($this->getDrivers()))
             ->mapWithKeys(fn (string $driver) => [$driver => $this->driver($driver)->getName()])
-            ->when($activated, fn (Collection $providers) => $providers->reject(fn (string $driver) => ! $this->driver($driver)->isEnabled()))
+            ->when($activated, fn (Collection $providers) => $providers->reject(fn (string $name, string $key) => !$this->driver($key)->isEnabled()))
             ->all();
     }
 
