@@ -28,7 +28,7 @@ class SmsManager extends BaseManager implements Factory
 
     public function getDefaultDriver(): string
     {
-        return setting('fob_sms_default_driver', 'twilio');
+        return setting('sms_default_driver', 'twilio');
     }
 
     public function getDrivers(): array
