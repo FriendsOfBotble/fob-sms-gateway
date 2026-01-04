@@ -6,6 +6,8 @@ return [
     'from_help' => 'هذا هو معرف المرسل الذي سيظهر على جهاز المستلم.',
     'flow_id' => 'معرف القالب',
     'flow_id_help' => 'يمكنك العثور على معرف القالب الخاص بك :link.',
+    'otp_variable_name' => 'اسم متغير OTP',
+    'otp_variable_name_help' => 'اسم المتغير في قالب Msg91 (مثال: OTP لـ ##OTP##، VAR1 لـ ##VAR1##). الافتراضي: OTP',
     'here' => 'هنا',
     'instructions' => [
         'configuration_guide' => 'دليل تكوين MSG91',

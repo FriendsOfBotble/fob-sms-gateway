@@ -45,6 +45,14 @@ class Msg91GatewayForm extends SmsGatewayForm
                         ),
                     ]))
                     ->required()
+            )
+            ->add(
+                'otp_variable_name',
+                TextField::class,
+                TextFieldOption::make()
+                    ->label(trans('plugins/fob-sms-gateway::msg91.otp_variable_name'))
+                    ->helperText(trans('plugins/fob-sms-gateway::msg91.otp_variable_name_help'))
+                    ->value('OTP')
             );
     }
 }

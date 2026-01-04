@@ -6,6 +6,8 @@ return [
     'from_help' => 'यह प्रेषक आईडी है जो प्राप्तकर्ता के डिवाइस पर दिखाई देगी।',
     'flow_id' => 'टेम्पलेट आईडी',
     'flow_id_help' => 'आप अपनी टेम्पलेट आईडी :link पा सकते हैं।',
+    'otp_variable_name' => 'OTP वेरिएबल नाम',
+    'otp_variable_name_help' => 'आपके Msg91 टेम्पलेट में वेरिएबल का नाम (जैसे: ##OTP## के लिए OTP, ##VAR1## के लिए VAR1)। डिफ़ॉल्ट: OTP',
     'here' => 'यहां',
     'instructions' => [
         'configuration_guide' => 'MSG91 कॉन्फ़िगरेशन गाइड',

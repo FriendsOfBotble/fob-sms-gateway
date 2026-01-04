@@ -6,6 +6,8 @@ return [
     'from_help' => 'This is the sender ID that will appear on the recipient\'s device.',
     'flow_id' => 'Template ID',
     'flow_id_help' => 'You can find your Template ID :link.',
+    'otp_variable_name' => 'OTP Variable Name',
+    'otp_variable_name_help' => 'The variable name in your Msg91 template (e.g., OTP for ##OTP##, VAR1 for ##VAR1##). Default: OTP',
     'here' => 'here',
     'instructions' => [
         'configuration_guide' => 'MSG91 Configuration Guide',

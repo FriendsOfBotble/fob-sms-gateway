@@ -39,12 +39,17 @@ class Msg91 extends AbstractDriver
         }
 
         try {
+            $otpVariableName = Sms::getSetting('otp_variable_name', 'msg91') ?: 'OTP';
+
+            // Extract OTP code from the message (typically 4-8 digits)
+            $otpCode = $this->extractOtpFromMessage($message);
+
             $payload = [
                 'json' => [
                     'flow_id' => Sms::getSetting('flow_id', 'msg91'),
                     'sender' => $this->getFrom(),
                     'mobiles' => $to,
-                    'message' => $message,
+                    $otpVariableName => $otpCode,
                 ],
             ];
 
@@ -63,6 +68,16 @@ class Msg91 extends AbstractDriver
                 'error' => $e->getMessage(),
             ]);
         }
+    }
+
+    protected function extractOtpFromMessage(string $message): string
+    {
+        // Extract OTP code (4-8 digits) from the message
+        if (preg_match('/\b(\d{4,8})\b/', $message, $matches)) {
+            return $matches[1];
+        }
+
+        return $message;
     }
 
     public function normalizePhoneNumber(string $phone): string

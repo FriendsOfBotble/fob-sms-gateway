@@ -6,6 +6,8 @@ return [
     'from_help' => 'Ini adalah ID pengirim yang akan muncul di perangkat penerima.',
     'flow_id' => 'ID Template',
     'flow_id_help' => 'Anda dapat menemukan ID Template Anda :link.',
+    'otp_variable_name' => 'Nama Variabel OTP',
+    'otp_variable_name_help' => 'Nama variabel dalam template Msg91 Anda (contoh: OTP untuk ##OTP##, VAR1 untuk ##VAR1##). Default: OTP',
     'here' => 'di sini',
     'instructions' => [
         'configuration_guide' => 'Panduan Konfigurasi MSG91',

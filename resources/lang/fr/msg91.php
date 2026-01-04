@@ -6,6 +6,8 @@ return [
     'from_help' => 'C\'est l\'ID d\'expéditeur qui apparaîtra sur l\'appareil du destinataire.',
     'flow_id' => 'ID de modèle',
     'flow_id_help' => 'Vous pouvez trouver votre ID de modèle :link.',
+    'otp_variable_name' => 'Nom de la variable OTP',
+    'otp_variable_name_help' => 'Le nom de la variable dans votre modèle Msg91 (ex: OTP pour ##OTP##, VAR1 pour ##VAR1##). Par défaut: OTP',
     'here' => 'ici',
     'instructions' => [
         'configuration_guide' => 'Guide de configuration MSG91',

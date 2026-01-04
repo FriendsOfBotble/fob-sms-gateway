@@ -6,6 +6,8 @@ return [
     'from_help' => 'এটি প্রাপকের ডিভাইসে দেখা যাবে এমন প্রেরক আইডি।',
     'flow_id' => 'টেমপ্লেট আইডি',
     'flow_id_help' => 'আপনি আপনার টেমপ্লেট আইডি :link পাবেন।',
+    'otp_variable_name' => 'OTP ভেরিয়েবল নাম',
+    'otp_variable_name_help' => 'আপনার Msg91 টেমপ্লেটে ভেরিয়েবলের নাম (যেমন: ##OTP## এর জন্য OTP, ##VAR1## এর জন্য VAR1)। ডিফল্ট: OTP',
     'here' => 'এখানে',
     'instructions' => [
         'configuration_guide' => 'MSG91 কনফিগারেশন গাইড',

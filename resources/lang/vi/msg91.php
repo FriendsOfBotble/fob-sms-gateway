@@ -6,6 +6,8 @@ return [
     'from_help' => 'Đây là ID người gửi sẽ xuất hiện trên thiết bị của người nhận.',
     'flow_id' => 'ID mẫu',
     'flow_id_help' => 'Bạn có thể tìm thấy ID mẫu của bạn :link.',
+    'otp_variable_name' => 'Tên biến OTP',
+    'otp_variable_name_help' => 'Tên biến trong mẫu Msg91 (ví dụ: OTP cho ##OTP##, VAR1 cho ##VAR1##). Mặc định: OTP',
     'here' => 'tại đây',
     'instructions' => [
         'configuration_guide' => 'Hướng dẫn cấu hình MSG91',

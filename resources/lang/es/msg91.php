@@ -6,6 +6,8 @@ return [
     'from_help' => 'Este es el ID de remitente que aparecerá en el dispositivo del destinatario.',
     'flow_id' => 'ID de Plantilla',
     'flow_id_help' => 'Puede encontrar su ID de Plantilla :link.',
+    'otp_variable_name' => 'Nombre de Variable OTP',
+    'otp_variable_name_help' => 'El nombre de la variable en su plantilla Msg91 (ej: OTP para ##OTP##, VAR1 para ##VAR1##). Por defecto: OTP',
     'here' => 'aquí',
     'instructions' => [
         'configuration_guide' => 'Guía de Configuración de MSG91',

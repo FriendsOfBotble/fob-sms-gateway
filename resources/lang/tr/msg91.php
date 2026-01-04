@@ -6,6 +6,8 @@ return [
     'from_help' => 'Bu, alıcının cihazında görünecek olan gönderen kimliğidir.',
     'flow_id' => 'Şablon Kimliği',
     'flow_id_help' => 'Şablon Kimliğinizi :link bulabilirsiniz.',
+    'otp_variable_name' => 'OTP Değişken Adı',
+    'otp_variable_name_help' => 'Msg91 şablonunuzdaki değişken adı (örn: ##OTP## için OTP, ##VAR1## için VAR1). Varsayılan: OTP',
     'here' => 'burada',
     'instructions' => [
         'configuration_guide' => 'MSG91 Yapılandırma Kılavuzu',
