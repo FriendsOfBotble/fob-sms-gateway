@@ -28,7 +28,7 @@ class SmsManager extends BaseManager implements Factory
 
     public function getDefaultDriver(): string
     {
-        return setting('sms_default_driver', 'twilio');
+        return setting('fob_sms_default_driver', 'twilio');
     }
 
     public function getDrivers(): array
@@ -44,8 +44,8 @@ class SmsManager extends BaseManager implements Factory
     public function getProviders(bool $activated = false): array
     {
         return collect(array_keys($this->getDrivers()))
-            ->mapWithKeys(fn (string $driver) => [$driver => $this->driver($driver)->getName()])
-            ->when($activated, fn (Collection $providers) => $providers->reject(fn (string $name, string $key) => !$this->driver($key)->isEnabled()))
+            ->mapWithKeys(fn (string $driverKey) => [$driverKey => $this->driver($driverKey)->getName()])
+            ->when($activated, fn (Collection $providers) => $providers->reject(fn (string $displayName, string $driverKey) => ! $this->driver($driverKey)->isEnabled()))
             ->all();
     }
 

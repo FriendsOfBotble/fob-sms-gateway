@@ -13,7 +13,7 @@ class SmsSettingRequest extends Request
     public function rules(): array
     {
         return [
-            'sms_default_driver' => [
+            'fob_sms_default_driver' => [
                 'required',
                 'string',
                 Rule::in(array_keys(Sms::getProviders(activated: true))),

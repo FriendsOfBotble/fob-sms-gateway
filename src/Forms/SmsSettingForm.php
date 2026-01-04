@@ -35,7 +35,7 @@ class SmsSettingForm extends SettingForm
             ->setValidatorClass(SmsSettingRequest::class)
             ->setUrl(route('sms.gateways.settings'))
             ->add(
-                'sms_default_driver',
+                'fob_sms_default_driver',
                 SelectField::class,
                 SelectFieldOption::make()
                     ->label(trans('plugins/fob-sms-gateway::sms.settings.form.default_sms_provider'))
