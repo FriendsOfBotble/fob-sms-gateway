@@ -50,7 +50,7 @@ class ContentInstance extends InstanceResource
      * @param mixed[] $payload The response payload
      * @param string $sid The Twilio-provided string that uniquely identifies the Content resource to fetch.
      */
-    public function __construct(Version $version, array $payload, string $sid = null)
+    public function __construct(Version $version, array $payload, ?string $sid = null)
     {
         parent::__construct($version);
 
@@ -111,6 +111,19 @@ class ContentInstance extends InstanceResource
     {
 
         return $this->proxy()->fetch();
+    }
+
+    /**
+     * Update the ContentInstance
+     *
+     * @param ContentUpdateRequest $contentUpdateRequest
+     * @return ContentInstance Updated ContentInstance
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function update(ContentUpdateRequest $contentUpdateRequest): ContentInstance
+    {
+
+        return $this->proxy()->update($contentUpdateRequest);
     }
 
     /**

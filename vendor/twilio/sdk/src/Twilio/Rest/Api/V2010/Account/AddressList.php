@@ -22,6 +22,11 @@ use Twilio\Options;
 use Twilio\Stream;
 use Twilio\Values;
 use Twilio\Version;
+use Twilio\Http\Response;
+use Twilio\Metadata\ArrayMetadata;
+use Twilio\Metadata\PageMetadata;
+use Twilio\Metadata\ResourceMetadata;
+use Twilio\Metadata\StreamMetadata;
 use Twilio\Serialize;
 
 
@@ -51,7 +56,7 @@ class AddressList extends ListResource
     }
 
     /**
-     * Create the AddressInstance
+     * Helper function for Create
      *
      * @param string $customerName The name to associate with the new address.
      * @param string $street The number and street address of the new address.
@@ -60,12 +65,11 @@ class AddressList extends ListResource
      * @param string $postalCode The postal code of the new address.
      * @param string $isoCountry The ISO country code of the new address.
      * @param array|Options $options Optional Arguments
-     * @return AddressInstance Created AddressInstance
+     * @return Response Created Response
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function create(string $customerName, string $street, string $city, string $region, string $postalCode, string $isoCountry, array $options = []): AddressInstance
+    private function _create(string $customerName, string $street, string $city, string $region, string $postalCode, string $isoCountry, array $options = []): Response
     {
-
         $options = new Values($options);
 
         $data = Values::of([
@@ -91,13 +95,59 @@ class AddressList extends ListResource
                 $options['streetSecondary'],
         ]);
 
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->create('POST', $this->uri, [], $data, $headers);
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "create");
+    }
 
+    /**
+     * Create the AddressInstance
+     *
+     * @param string $customerName The name to associate with the new address.
+     * @param string $street The number and street address of the new address.
+     * @param string $city The city of the new address.
+     * @param string $region The state or region of the new address.
+     * @param string $postalCode The postal code of the new address.
+     * @param string $isoCountry The ISO country code of the new address.
+     * @param array|Options $options Optional Arguments
+     * @return AddressInstance Created AddressInstance
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function create(string $customerName, string $street, string $city, string $region, string $postalCode, string $isoCountry, array $options = []): AddressInstance
+    {
+        $response = $this->_create( $customerName,  $street,  $city,  $region,  $postalCode,  $isoCountry, $options);
         return new AddressInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['accountSid']
+        );
+        
+    }
+
+    /**
+     * Create the AddressInstance with Metadata
+     *
+     * @param string $customerName The name to associate with the new address.
+     * @param string $street The number and street address of the new address.
+     * @param string $city The city of the new address.
+     * @param string $region The state or region of the new address.
+     * @param string $postalCode The postal code of the new address.
+     * @param string $isoCountry The ISO country code of the new address.
+     * @param array|Options $options Optional Arguments
+     * @return ResourceMetadata The Created Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function createWithMetadata(string $customerName, string $street, string $city, string $region, string $postalCode, string $isoCountry, array $options = []): ResourceMetadata
+    {
+        $response = $this->_create( $customerName,  $street,  $city,  $region,  $postalCode,  $isoCountry, $options);
+        $resource = new AddressInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['accountSid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 
@@ -118,9 +168,36 @@ class AddressList extends ListResource
      *                        efficient page size, i.e. min(limit, 1000)
      * @return AddressInstance[] Array of results
      */
-    public function read(array $options = [], int $limit = null, $pageSize = null): array
+    public function read(array $options = [], ?int $limit = null, $pageSize = null): array
     {
         return \iterator_to_array($this->stream($options, $limit, $pageSize), false);
+    }
+
+    /**
+     * Reads AddressInstance records from the API as a list
+     * Unlike stream(), this operation is eager and will load `limit` records into
+     * memory before returning.
+     *
+     * @param array|Options $options Optional Arguments
+     * @param int $limit Upper limit for the number of records to return. read()
+     *                   guarantees to never return more than limit.  Default is no
+     *                   limit
+     * @param mixed $pageSize Number of records to fetch per request, when not set
+     *                        will use the default value of 50 records.  If no
+     *                        page_size is defined but a limit is defined, read()
+     *                        will attempt to read the limit with the most
+     *                        efficient page size, i.e. min(limit, 1000)
+     * @return ArrayMetadata Array of results along with metadata
+     */
+    public function readWithMetadata(array $options = [], ?int $limit = null, $pageSize = null): ArrayMetadata
+    {
+        $streamWithMetadata = $this->streamWithMetadata($options, $limit, $pageSize);
+        $readResponse = \iterator_to_array($streamWithMetadata, false);
+        return new ArrayMetadata(
+            $readResponse,
+            $streamWithMetadata->getStatusCode(),
+            $streamWithMetadata->getHeaders()
+        );
     }
 
     /**
@@ -142,13 +219,83 @@ class AddressList extends ListResource
      *                        efficient page size, i.e. min(limit, 1000)
      * @return Stream stream of results
      */
-    public function stream(array $options = [], int $limit = null, $pageSize = null): Stream
+    public function stream(array $options = [], ?int $limit = null, $pageSize = null): Stream
     {
         $limits = $this->version->readLimits($limit, $pageSize);
 
         $page = $this->page($options, $limits['pageSize']);
 
         return $this->version->stream($page, $limits['limit'], $limits['pageLimit']);
+    }
+
+    /**
+     * Streams AddressInstance records from the API as a generator stream and returns result with Metadata
+     * This operation lazily loads records as efficiently as possible until the
+     * limit
+     * is reached.
+     * The results are returned as a generator, so this operation is memory
+     * efficient.
+     *
+     * @param array|Options $options Optional Arguments
+     * @param int $limit Upper limit for the number of records to return. stream()
+     *                   guarantees to never return more than limit.  Default is no
+     *                   limit
+     * @param mixed $pageSize Number of records to fetch per request, when not set
+     *                        will use the default value of 50 records.  If no
+     *                        page_size is defined but a limit is defined, stream()
+     *                        will attempt to read the limit with the most
+     *                        efficient page size, i.e. min(limit, 1000)
+     * @return StreamMetadata stream of results with metadata
+     */
+    public function streamWithMetadata(array $options = [], ?int $limit = null, $pageSize = null): StreamMetadata
+    {
+        $limits = $this->version->readLimits($limit, $pageSize);
+
+        $pageWithMetadata = $this->pageWithMetadata($options, $limits['pageSize']);
+
+        $stream = $this->version->stream($pageWithMetadata->getPage(), $limits['limit'], $limits['pageLimit']);
+
+        return new StreamMetadata(
+            $stream,
+            $pageWithMetadata->getStatusCode(),
+            $pageWithMetadata->getHeaders()
+        );
+    }
+
+    /**
+     * Helper function for Page
+     *
+     * @param mixed $pageSize Number of records to return, defaults to 50
+     * @param string $pageToken PageToken provided by the API
+     * @param mixed $pageNumber Page Number, this value is simply for client state
+     * @return Response Paged Response
+     */
+    private function _page(
+        array $options = [],
+        $pageSize = Values::NONE,
+        string $pageToken = Values::NONE,
+        $pageNumber = Values::NONE
+    ): Response
+    {
+        $options = new Values($options);
+
+        $params = Values::of([
+            'CustomerName' =>
+                $options['customerName'],
+            'FriendlyName' =>
+                $options['friendlyName'],
+            'EmergencyEnabled' =>
+                Serialize::booleanToString($options['emergencyEnabled']),
+            'IsoCountry' =>
+                $options['isoCountry'],
+                                                            
+            'PageToken' => $pageToken,
+            'Page' => $pageNumber,
+            'PageSize' => $pageSize,
+        ]);
+
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json']);
+        return $this->version->page('GET', $this->uri, $params, [], $headers);
     }
 
     /**
@@ -167,23 +314,36 @@ class AddressList extends ListResource
         $pageNumber = Values::NONE
     ): AddressPage
     {
-        $options = new Values($options);
-
-        $params = Values::of([
-            'CustomerName' =>
-                $options['customerName'],
-            'FriendlyName' =>
-                $options['friendlyName'],
-            'IsoCountry' =>
-                $options['isoCountry'],
-            'PageToken' => $pageToken,
-            'Page' => $pageNumber,
-            'PageSize' => $pageSize,
-        ]);
-
-        $response = $this->version->page('GET', $this->uri, $params);
+        $response = $this->_page($options, $pageSize, $pageToken, $pageNumber);
 
         return new AddressPage($this->version, $response, $this->solution);
+    }
+
+    /**
+     * Retrieve a single page of AddressInstance records with metadata
+     * Request is executed immediately
+     *
+     * @param mixed $pageSize Number of records to return, defaults to 50
+     * @param string $pageToken PageToken provided by the API
+     * @param mixed $pageNumber Page Number, this value is simply for client state
+     * @return PageMetadata of AddressInstance
+     */
+    public function pageWithMetadata(
+        array $options = [],
+        $pageSize = Values::NONE,
+        string $pageToken = Values::NONE,
+        $pageNumber = Values::NONE
+    ): PageMetadata
+    {
+        $response = $this->_page($options, $pageSize, $pageToken, $pageNumber);
+
+        $resource =  new AddressPage($this->version, $response, $this->solution);
+
+        return new PageMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
+        );
     }
 
     /**

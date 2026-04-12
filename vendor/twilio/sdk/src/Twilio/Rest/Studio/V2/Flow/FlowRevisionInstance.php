@@ -27,6 +27,7 @@ use Twilio\Deserialize;
 /**
  * @property string|null $sid
  * @property string|null $accountSid
+ * @property string|null $authorSid
  * @property string|null $friendlyName
  * @property array|null $definition
  * @property string $status
@@ -48,7 +49,7 @@ class FlowRevisionInstance extends InstanceResource
      * @param string $sid The SID of the Flow resource to fetch.
      * @param string $revision Specific Revision number or can be `LatestPublished` and `LatestRevision`.
      */
-    public function __construct(Version $version, array $payload, string $sid, string $revision = null)
+    public function __construct(Version $version, array $payload, string $sid, ?string $revision = null)
     {
         parent::__construct($version);
 
@@ -56,6 +57,7 @@ class FlowRevisionInstance extends InstanceResource
         $this->properties = [
             'sid' => Values::array_get($payload, 'sid'),
             'accountSid' => Values::array_get($payload, 'account_sid'),
+            'authorSid' => Values::array_get($payload, 'author_sid'),
             'friendlyName' => Values::array_get($payload, 'friendly_name'),
             'definition' => Values::array_get($payload, 'definition'),
             'status' => Values::array_get($payload, 'status'),

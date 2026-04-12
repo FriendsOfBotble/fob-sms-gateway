@@ -22,23 +22,33 @@ use Twilio\ListResource;
 use Twilio\Values;
 use Twilio\Version;
 use Twilio\InstanceContext;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 use Twilio\Rest\Intelligence\V2\Transcript\SentenceList;
 use Twilio\Rest\Intelligence\V2\Transcript\OperatorResultList;
+use Twilio\Rest\Intelligence\V2\Transcript\EncryptedSentencesList;
 use Twilio\Rest\Intelligence\V2\Transcript\MediaList;
+use Twilio\Rest\Intelligence\V2\Transcript\EncryptedOperatorResultsList;
 
 
 /**
  * @property SentenceList $sentences
  * @property OperatorResultList $operatorResults
+ * @property EncryptedSentencesList $encryptedSentences
  * @property MediaList $media
+ * @property EncryptedOperatorResultsList $encryptedOperatorResults
+ * @method \Twilio\Rest\Intelligence\V2\Transcript\EncryptedSentencesContext encryptedSentences()
  * @method \Twilio\Rest\Intelligence\V2\Transcript\MediaContext media()
+ * @method \Twilio\Rest\Intelligence\V2\Transcript\EncryptedOperatorResultsContext encryptedOperatorResults()
  * @method \Twilio\Rest\Intelligence\V2\Transcript\OperatorResultContext operatorResults(string $operatorSid)
  */
 class TranscriptContext extends InstanceContext
     {
     protected $_sentences;
     protected $_operatorResults;
+    protected $_encryptedSentences;
     protected $_media;
+    protected $_encryptedOperatorResults;
 
     /**
      * Initialize the TranscriptContext
@@ -63,6 +73,18 @@ class TranscriptContext extends InstanceContext
     }
 
     /**
+     * Helper function for Delete
+     *
+     * @return Response Deleted Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _delete(): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
+        return $this->version->handleRequest('DELETE', $this->uri, [], [], $headers, "delete");
+    }
+
+    /**
      * Delete the TranscriptInstance
      *
      * @return bool True if delete succeeds, false otherwise
@@ -70,11 +92,40 @@ class TranscriptContext extends InstanceContext
      */
     public function delete(): bool
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        return $this->version->delete('DELETE', $this->uri, [], [], $headers);
+        $response = $this->_delete();
+        
+        return true;
     }
 
+    /**
+     * Delete the TranscriptInstance with Metadata
+     *
+     * @return ResourceMetadata The Deleted Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function deleteWithMetadata(): ResourceMetadata
+    {
+        $response = $this->_delete();
+        
+        return new ResourceMetadata(
+            null,
+            $response->getStatusCode(),
+            $response->getHeaders()
+        );
+    }
+
+
+    /**
+     * Helper function for Fetch
+     *
+     * @return Response Fetched Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _fetch(): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('GET', $this->uri, [], [], $headers, "fetch");
+    }
 
     /**
      * Fetch the TranscriptInstance
@@ -84,14 +135,33 @@ class TranscriptContext extends InstanceContext
      */
     public function fetch(): TranscriptInstance
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->fetch('GET', $this->uri, [], [], $headers);
-
+        $response = $this->_fetch();
         return new TranscriptInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['sid']
+        );
+        
+    }
+
+    /**
+     * Fetch the TranscriptInstance with Metadata
+     *
+     * @return ResourceMetadata The Fetched Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function fetchWithMetadata(): ResourceMetadata
+    {
+        $response = $this->_fetch();
+        $resource = new TranscriptInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['sid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 
@@ -127,6 +197,21 @@ class TranscriptContext extends InstanceContext
     }
 
     /**
+     * Access the encryptedSentences
+     */
+    protected function getEncryptedSentences(): EncryptedSentencesList
+    {
+        if (!$this->_encryptedSentences) {
+            $this->_encryptedSentences = new EncryptedSentencesList(
+                $this->version,
+                $this->solution['sid']
+            );
+        }
+
+        return $this->_encryptedSentences;
+    }
+
+    /**
      * Access the media
      */
     protected function getMedia(): MediaList
@@ -139,6 +224,21 @@ class TranscriptContext extends InstanceContext
         }
 
         return $this->_media;
+    }
+
+    /**
+     * Access the encryptedOperatorResults
+     */
+    protected function getEncryptedOperatorResults(): EncryptedOperatorResultsList
+    {
+        if (!$this->_encryptedOperatorResults) {
+            $this->_encryptedOperatorResults = new EncryptedOperatorResultsList(
+                $this->version,
+                $this->solution['sid']
+            );
+        }
+
+        return $this->_encryptedOperatorResults;
     }
 
     /**

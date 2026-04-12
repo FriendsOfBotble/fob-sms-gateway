@@ -20,6 +20,8 @@ use Twilio\Exceptions\TwilioException;
 use Twilio\ListResource;
 use Twilio\Values;
 use Twilio\Version;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 
 
 class PortingPortInList extends ListResource
@@ -42,22 +44,54 @@ class PortingPortInList extends ListResource
     }
 
     /**
+     * Helper function for Create
+     *
+     * @param NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate
+     * @return Response Created Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _create(NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/json', 'Accept' => 'application/json' ]);
+        $data = $numbersV1PortingPortInCreate->toArray();
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "create");
+    }
+
+    /**
      * Create the PortingPortInInstance
      *
+     * @param NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate
      * @return PortingPortInInstance Created PortingPortInInstance
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function create(): PortingPortInInstance
+    public function create(NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate): PortingPortInInstance
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $data = $body->toArray();
-        $headers['Content-Type'] = 'application/json';
-        $payload = $this->version->create('POST', $this->uri, [], $data, $headers);
-
+        $response = $this->_create( $numbersV1PortingPortInCreate);
         return new PortingPortInInstance(
             $this->version,
-            $payload
+            $response->getContent()
+        );
+        
+    }
+
+    /**
+     * Create the PortingPortInInstance with Metadata
+     *
+     * @param NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate
+     * @return ResourceMetadata The Created Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function createWithMetadata(NumbersV1PortingPortInCreate $numbersV1PortingPortInCreate): ResourceMetadata
+    {
+        $response = $this->_create( $numbersV1PortingPortInCreate);
+        $resource = new PortingPortInInstance(
+                        $this->version,
+                        $response->getContent()
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 

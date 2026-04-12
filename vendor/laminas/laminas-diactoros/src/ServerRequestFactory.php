@@ -6,6 +6,7 @@ namespace Laminas\Diactoros;
 
 use Laminas\Diactoros\ServerRequestFilter\FilterServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFilter\FilterUsingXForwardedHeaders;
+use Override;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -54,7 +55,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         ?array $files = null,
         ?FilterServerRequestInterface $requestFilter = null
     ): ServerRequestInterface {
-        $requestFilter = $requestFilter ?? FilterUsingXForwardedHeaders::trustReservedSubnets();
+        $requestFilter ??= FilterUsingXForwardedHeaders::trustReservedSubnets();
 
         $server  = normalizeServer(
             $server ?? $_SERVER,
@@ -84,6 +85,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
         $uploadedFiles = [];

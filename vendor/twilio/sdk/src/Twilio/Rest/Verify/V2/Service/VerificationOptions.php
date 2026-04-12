@@ -22,7 +22,7 @@ abstract class VerificationOptions
 {
     /**
      * @param string $customFriendlyName A custom user defined friendly name that overwrites the existing one in the verification message
-     * @param string $customMessage The text of a custom message to use for the verification.
+     * @param string $customMessage The text of a custom message to use for the verification [DEPRECATED].
      * @param string $sendDigits The digits to send after a phone call is answered, for example, to dial an extension. For more information, see the Programmable Voice documentation of [sendDigits](https://www.twilio.com/docs/voice/twiml/number#attributes-sendDigits).
      * @param string $locale Locale will automatically resolve based on phone number country code for SMS, WhatsApp, and call channel verifications. It will fallback to English or the template’s default translation if the selected translation is not available. This parameter will override the automatic locale resolution. [See supported languages and more information here](https://www.twilio.com/docs/verify/supported-languages).
      * @param string $customCode A pre-generated code to use for verification. The code can be between 4 and 10 characters, inclusive.
@@ -88,7 +88,7 @@ class CreateVerificationOptions extends Options
     {
     /**
      * @param string $customFriendlyName A custom user defined friendly name that overwrites the existing one in the verification message
-     * @param string $customMessage The text of a custom message to use for the verification.
+     * @param string $customMessage The text of a custom message to use for the verification [DEPRECATED].
      * @param string $sendDigits The digits to send after a phone call is answered, for example, to dial an extension. For more information, see the Programmable Voice documentation of [sendDigits](https://www.twilio.com/docs/voice/twiml/number#attributes-sendDigits).
      * @param string $locale Locale will automatically resolve based on phone number country code for SMS, WhatsApp, and call channel verifications. It will fallback to English or the template’s default translation if the selected translation is not available. This parameter will override the automatic locale resolution. [See supported languages and more information here](https://www.twilio.com/docs/verify/supported-languages).
      * @param string $customCode A pre-generated code to use for verification. The code can be between 4 and 10 characters, inclusive.
@@ -155,9 +155,9 @@ class CreateVerificationOptions extends Options
     }
 
     /**
-     * The text of a custom message to use for the verification.
+     * The text of a custom message to use for the verification [DEPRECATED].
      *
-     * @param string $customMessage The text of a custom message to use for the verification.
+     * @param string $customMessage The text of a custom message to use for the verification [DEPRECATED].
      * @return $this Fluent Builder
      */
     public function setCustomMessage(string $customMessage): self

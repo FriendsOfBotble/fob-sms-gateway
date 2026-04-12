@@ -30,6 +30,9 @@ abstract class UsAppToPersonOptions
      * @param bool $subscriberOptIn A boolean that specifies whether campaign has Subscriber Optin or not.
      * @param bool $ageGated A boolean that specifies whether campaign is age gated or not.
      * @param bool $directLending A boolean that specifies whether campaign allows direct lending or not.
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
      * @return CreateUsAppToPersonOptions Options builder
      */
     public static function create(
@@ -42,7 +45,10 @@ abstract class UsAppToPersonOptions
         array $helpKeywords = Values::ARRAY_NONE,
         bool $subscriberOptIn = Values::BOOL_NONE,
         bool $ageGated = Values::BOOL_NONE,
-        bool $directLending = Values::BOOL_NONE
+        bool $directLending = Values::BOOL_NONE,
+        string $privacyPolicyUrl = Values::NONE,
+        string $termsAndConditionsUrl = Values::NONE,
+        string $xTwilioApiVersion = Values::NONE
 
     ): CreateUsAppToPersonOptions
     {
@@ -55,13 +61,64 @@ abstract class UsAppToPersonOptions
             $helpKeywords,
             $subscriberOptIn,
             $ageGated,
-            $directLending
+            $directLending,
+            $privacyPolicyUrl,
+            $termsAndConditionsUrl,
+            $xTwilioApiVersion
         );
     }
 
 
+    /**
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return FetchUsAppToPersonOptions Options builder
+     */
+    public static function fetch(
+        
+        string $xTwilioApiVersion = Values::NONE
 
+    ): FetchUsAppToPersonOptions
+    {
+        return new FetchUsAppToPersonOptions(
+            $xTwilioApiVersion
+        );
+    }
 
+    /**
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return ReadUsAppToPersonOptions Options builder
+     */
+    public static function read(
+        
+        string $xTwilioApiVersion = Values::NONE
+
+    ): ReadUsAppToPersonOptions
+    {
+        return new ReadUsAppToPersonOptions(
+            $xTwilioApiVersion
+        );
+    }
+
+    /**
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return UpdateUsAppToPersonOptions Options builder
+     */
+    public static function update(
+        
+        string $privacyPolicyUrl = Values::NONE,
+        string $termsAndConditionsUrl = Values::NONE,
+        string $xTwilioApiVersion = Values::NONE
+
+    ): UpdateUsAppToPersonOptions
+    {
+        return new UpdateUsAppToPersonOptions(
+            $privacyPolicyUrl,
+            $termsAndConditionsUrl,
+            $xTwilioApiVersion
+        );
+    }
 
 }
 
@@ -77,6 +134,9 @@ class CreateUsAppToPersonOptions extends Options
      * @param bool $subscriberOptIn A boolean that specifies whether campaign has Subscriber Optin or not.
      * @param bool $ageGated A boolean that specifies whether campaign is age gated or not.
      * @param bool $directLending A boolean that specifies whether campaign allows direct lending or not.
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
      */
     public function __construct(
         
@@ -88,7 +148,10 @@ class CreateUsAppToPersonOptions extends Options
         array $helpKeywords = Values::ARRAY_NONE,
         bool $subscriberOptIn = Values::BOOL_NONE,
         bool $ageGated = Values::BOOL_NONE,
-        bool $directLending = Values::BOOL_NONE
+        bool $directLending = Values::BOOL_NONE,
+        string $privacyPolicyUrl = Values::NONE,
+        string $termsAndConditionsUrl = Values::NONE,
+        string $xTwilioApiVersion = Values::NONE
 
     ) {
         $this->options['optInMessage'] = $optInMessage;
@@ -100,6 +163,9 @@ class CreateUsAppToPersonOptions extends Options
         $this->options['subscriberOptIn'] = $subscriberOptIn;
         $this->options['ageGated'] = $ageGated;
         $this->options['directLending'] = $directLending;
+        $this->options['privacyPolicyUrl'] = $privacyPolicyUrl;
+        $this->options['termsAndConditionsUrl'] = $termsAndConditionsUrl;
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
     }
 
     /**
@@ -211,6 +277,42 @@ class CreateUsAppToPersonOptions extends Options
     }
 
     /**
+     * The URL of the privacy policy for the campaign.
+     *
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @return $this Fluent Builder
+     */
+    public function setPrivacyPolicyUrl(string $privacyPolicyUrl): self
+    {
+        $this->options['privacyPolicyUrl'] = $privacyPolicyUrl;
+        return $this;
+    }
+
+    /**
+     * The URL of the terms and conditions for the campaign.
+     *
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @return $this Fluent Builder
+     */
+    public function setTermsAndConditionsUrl(string $termsAndConditionsUrl): self
+    {
+        $this->options['termsAndConditionsUrl'] = $termsAndConditionsUrl;
+        return $this;
+    }
+
+    /**
+     * The version of the Messaging API to use for this request
+     *
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return $this Fluent Builder
+     */
+    public function setXTwilioApiVersion(string $xTwilioApiVersion): self
+    {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+        return $this;
+    }
+
+    /**
      * Provide a friendly representation
      *
      * @return string Machine friendly representation
@@ -223,6 +325,144 @@ class CreateUsAppToPersonOptions extends Options
 }
 
 
+class FetchUsAppToPersonOptions extends Options
+    {
+    /**
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     */
+    public function __construct(
+        
+        string $xTwilioApiVersion = Values::NONE
 
+    ) {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+    }
 
+    /**
+     * The version of the Messaging API to use for this request
+     *
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return $this Fluent Builder
+     */
+    public function setXTwilioApiVersion(string $xTwilioApiVersion): self
+    {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+        return $this;
+    }
+
+    /**
+     * Provide a friendly representation
+     *
+     * @return string Machine friendly representation
+     */
+    public function __toString(): string
+    {
+        $options = \http_build_query(Values::of($this->options), '', ' ');
+        return '[Twilio.Messaging.V1.FetchUsAppToPersonOptions ' . $options . ']';
+    }
+}
+
+class ReadUsAppToPersonOptions extends Options
+    {
+    /**
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     */
+    public function __construct(
+        
+        string $xTwilioApiVersion = Values::NONE
+
+    ) {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+    }
+
+    /**
+     * The version of the Messaging API to use for this request
+     *
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return $this Fluent Builder
+     */
+    public function setXTwilioApiVersion(string $xTwilioApiVersion): self
+    {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+        return $this;
+    }
+
+    /**
+     * Provide a friendly representation
+     *
+     * @return string Machine friendly representation
+     */
+    public function __toString(): string
+    {
+        $options = \http_build_query(Values::of($this->options), '', ' ');
+        return '[Twilio.Messaging.V1.ReadUsAppToPersonOptions ' . $options . ']';
+    }
+}
+
+class UpdateUsAppToPersonOptions extends Options
+    {
+    /**
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     */
+    public function __construct(
+        
+        string $privacyPolicyUrl = Values::NONE,
+        string $termsAndConditionsUrl = Values::NONE,
+        string $xTwilioApiVersion = Values::NONE
+
+    ) {
+        $this->options['privacyPolicyUrl'] = $privacyPolicyUrl;
+        $this->options['termsAndConditionsUrl'] = $termsAndConditionsUrl;
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+    }
+
+    /**
+     * The URL of the privacy policy for the campaign.
+     *
+     * @param string $privacyPolicyUrl The URL of the privacy policy for the campaign.
+     * @return $this Fluent Builder
+     */
+    public function setPrivacyPolicyUrl(string $privacyPolicyUrl): self
+    {
+        $this->options['privacyPolicyUrl'] = $privacyPolicyUrl;
+        return $this;
+    }
+
+    /**
+     * The URL of the terms and conditions for the campaign.
+     *
+     * @param string $termsAndConditionsUrl The URL of the terms and conditions for the campaign.
+     * @return $this Fluent Builder
+     */
+    public function setTermsAndConditionsUrl(string $termsAndConditionsUrl): self
+    {
+        $this->options['termsAndConditionsUrl'] = $termsAndConditionsUrl;
+        return $this;
+    }
+
+    /**
+     * The version of the Messaging API to use for this request
+     *
+     * @param string $xTwilioApiVersion The version of the Messaging API to use for this request
+     * @return $this Fluent Builder
+     */
+    public function setXTwilioApiVersion(string $xTwilioApiVersion): self
+    {
+        $this->options['xTwilioApiVersion'] = $xTwilioApiVersion;
+        return $this;
+    }
+
+    /**
+     * Provide a friendly representation
+     *
+     * @return string Machine friendly representation
+     */
+    public function __toString(): string
+    {
+        $options = \http_build_query(Values::of($this->options), '', ' ');
+        return '[Twilio.Messaging.V1.UpdateUsAppToPersonOptions ' . $options . ']';
+    }
+}
 

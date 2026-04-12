@@ -83,7 +83,7 @@ class Dial extends TwiML {
      * @param array $attributes Optional attributes
      * @return Sip Child element.
      */
-    public function sip($sipUrl, $attributes = []): Sip {
+    public function sip($sipUrl = null, $attributes = []): Sip {
         return $this->nest(new Sip($sipUrl, $attributes));
     }
 
@@ -96,6 +96,17 @@ class Dial extends TwiML {
      */
     public function application($applicationSid = null, $attributes = []): Application {
         return $this->nest(new Application($applicationSid, $attributes));
+    }
+
+    /**
+     * Add WhatsApp child.
+     *
+     * @param string $phoneNumber WhatsApp Phone Number to dial
+     * @param array $attributes Optional attributes
+     * @return WhatsApp Child element.
+     */
+    public function whatsApp($phoneNumber, $attributes = []): WhatsApp {
+        return $this->nest(new WhatsApp($phoneNumber, $attributes));
     }
 
     /**

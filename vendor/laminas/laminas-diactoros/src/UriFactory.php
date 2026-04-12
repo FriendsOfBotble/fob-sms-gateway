@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laminas\Diactoros;
 
+use Override;
 use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -34,6 +35,7 @@ class UriFactory implements UriFactoryInterface
     /**
      * {@inheritDoc}
      */
+    #[Override]
     public function createUri(string $uri = ''): UriInterface
     {
         return new Uri($uri);
@@ -162,7 +164,7 @@ class UriFactory implements UriFactoryInterface
     private static function marshalIpv6HostAndPort(array $server, ?int $port): array
     {
         $host             = '[' . (string) $server['SERVER_ADDR'] . ']';
-        $port             = $port ?? 80;
+        $port           ??= 80;
         $portSeparatorPos = strrpos($host, ':');
 
         if (false === $portSeparatorPos) {
@@ -203,7 +205,9 @@ class UriFactory implements UriFactoryInterface
         $requestUri = $server['REQUEST_URI'] ?? null;
 
         if (is_string($requestUri)) {
-            return preg_replace('#^[^/:]+://[^/]+#', '', $requestUri);
+            $result = preg_replace('#^[^/:]+://[^/]+#', '', $requestUri);
+            assert($result !== null, 'Always true condition for psalm type safety');
+            return $result;
         }
 
         $origPathInfo = $server['ORIG_PATH_INFO'] ?? '';

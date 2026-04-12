@@ -31,6 +31,8 @@ use Twilio\Rest\Studio\V2\Flow\Execution\ExecutionContextList;
  * @property string|null $accountSid
  * @property string|null $flowSid
  * @property string|null $contactChannelAddress
+ * @property string|null $contactSid
+ * @property int|null $flowVersion
  * @property array|null $context
  * @property string $status
  * @property \DateTime|null $dateCreated
@@ -51,7 +53,7 @@ class ExecutionInstance extends InstanceResource
      * @param string $flowSid The SID of the Excecution's Flow.
      * @param string $sid The SID of the Execution resource to delete.
      */
-    public function __construct(Version $version, array $payload, string $flowSid, string $sid = null)
+    public function __construct(Version $version, array $payload, string $flowSid, ?string $sid = null)
     {
         parent::__construct($version);
 
@@ -61,6 +63,8 @@ class ExecutionInstance extends InstanceResource
             'accountSid' => Values::array_get($payload, 'account_sid'),
             'flowSid' => Values::array_get($payload, 'flow_sid'),
             'contactChannelAddress' => Values::array_get($payload, 'contact_channel_address'),
+            'contactSid' => Values::array_get($payload, 'contact_sid'),
+            'flowVersion' => Values::array_get($payload, 'flow_version'),
             'context' => Values::array_get($payload, 'context'),
             'status' => Values::array_get($payload, 'status'),
             'dateCreated' => Deserialize::dateTime(Values::array_get($payload, 'date_created')),

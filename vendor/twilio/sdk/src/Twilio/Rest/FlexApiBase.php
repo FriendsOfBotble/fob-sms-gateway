@@ -15,15 +15,12 @@ namespace Twilio\Rest;
 use Twilio\Domain;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\FlexApi\V1;
-use Twilio\Rest\FlexApi\V2;
 
 /**
  * @property \Twilio\Rest\FlexApi\V1 $v1
- * @property \Twilio\Rest\FlexApi\V2 $v2
  */
 class FlexApiBase extends Domain {
     protected $_v1;
-    protected $_v2;
 
     /**
      * Construct the FlexApi Domain
@@ -45,16 +42,6 @@ class FlexApiBase extends Domain {
             $this->_v1 = new V1($this);
         }
         return $this->_v1;
-    }
-
-    /**
-     * @return V2 Version v2 of flex-api
-     */
-    protected function getV2(): V2 {
-        if (!$this->_v2) {
-            $this->_v2 = new V2($this);
-        }
-        return $this->_v2;
     }
 
     /**

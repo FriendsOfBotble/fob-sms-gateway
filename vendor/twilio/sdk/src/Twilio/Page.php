@@ -21,6 +21,8 @@ abstract class Page implements \Iterator {
         'num_pages',
         'start',
         'uri',
+        'totalResults',
+        'schemas'
     ];
 
     protected $version;
@@ -97,37 +99,53 @@ abstract class Page implements \Iterator {
     public function getPreviousPageUrl(): ?string {
         if ($this->hasMeta('previous_page_url')) {
             return $this->getMeta('previous_page_url');
-        } else if (\array_key_exists('previous_page_uri', $this->payload) && $this->payload['previous_page_uri']) {
+        }
+
+        if (\array_key_exists('previous_page_uri', $this->payload) && $this->payload['previous_page_uri']) {
             return $this->getVersion()->getDomain()->absoluteUrl($this->payload['previous_page_uri']);
         }
+
         return null;
     }
 
     public function getNextPageUrl(): ?string {
         if ($this->hasMeta('next_page_url')) {
             return $this->getMeta('next_page_url');
-        } else if (\array_key_exists('next_page_uri', $this->payload) && $this->payload['next_page_uri']) {
+        }
+
+        if (\array_key_exists('next_page_uri', $this->payload) && $this->payload['next_page_uri']) {
             return $this->getVersion()->getDomain()->absoluteUrl($this->payload['next_page_uri']);
         }
+
         return null;
     }
 
-    public function nextPage(): ?Page {
-        if (!$this->getNextPageUrl()) {
+    public function getResponse(?string $url): ?Response {
+        if (!$url) {
             return null;
         }
 
-        $response = $this->getVersion()->getDomain()->getClient()->request('GET', $this->getNextPageUrl());
+        return $this->getVersion()->getDomain()->getClient()->request('GET', $url);
+    }
+
+    public function createPage(Response $response): Page {
         return new static($this->getVersion(), $response, $this->solution);
     }
 
-    public function previousPage(): ?Page {
-        if (!$this->getPreviousPageUrl()) {
+    public function nextPage(): ?Page {
+        $response = $this->getResponse($this->getNextPageUrl());
+        if (!$response) {
             return null;
         }
+        return $this->createPage($response);
+    }
 
-        $response = $this->getVersion()->getDomain()->getClient()->request('GET', $this->getPreviousPageUrl());
-        return new static($this->getVersion(), $response, $this->solution);
+    public function previousPage(): ?Page {
+        $response = $this->getResponse($this->getPreviousPageUrl());
+        if (!$response) {
+            return null;
+        }
+        return $this->createPage($response);
     }
 
     /**

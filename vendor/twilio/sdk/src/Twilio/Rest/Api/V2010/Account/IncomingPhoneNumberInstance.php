@@ -62,6 +62,7 @@ use Twilio\Rest\Api\V2010\Account\IncomingPhoneNumber\AssignedAddOnList;
  * @property string $emergencyAddressStatus
  * @property string|null $bundleSid
  * @property string|null $status
+ * @property string|null $type
  */
 class IncomingPhoneNumberInstance extends InstanceResource
 {
@@ -75,7 +76,7 @@ class IncomingPhoneNumberInstance extends InstanceResource
      * @param string $accountSid The SID of the [Account](https://www.twilio.com/docs/iam/api/account) that will create the resource.
      * @param string $sid The Twilio-provided string that uniquely identifies the IncomingPhoneNumber resource to delete.
      */
-    public function __construct(Version $version, array $payload, string $accountSid, string $sid = null)
+    public function __construct(Version $version, array $payload, string $accountSid, ?string $sid = null)
     {
         parent::__construct($version);
 
@@ -115,6 +116,7 @@ class IncomingPhoneNumberInstance extends InstanceResource
             'emergencyAddressStatus' => Values::array_get($payload, 'emergency_address_status'),
             'bundleSid' => Values::array_get($payload, 'bundle_sid'),
             'status' => Values::array_get($payload, 'status'),
+            'type' => Values::array_get($payload, 'type'),
         ];
 
         $this->solution = ['accountSid' => $accountSid, 'sid' => $sid ?: $this->properties['sid'], ];

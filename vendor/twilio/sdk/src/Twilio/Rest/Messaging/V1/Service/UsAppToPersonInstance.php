@@ -19,6 +19,7 @@ namespace Twilio\Rest\Messaging\V1\Service;
 
 use Twilio\Exceptions\TwilioException;
 use Twilio\InstanceResource;
+use Twilio\Options;
 use Twilio\Values;
 use Twilio\Version;
 use Twilio\Deserialize;
@@ -52,7 +53,9 @@ use Twilio\Deserialize;
  * @property \DateTime|null $dateUpdated
  * @property string|null $url
  * @property bool|null $mock
- * @property array[]|null $errors
+ * @property object[]|null $errors
+ * @property string $privacyPolicyUrl
+ * @property string $termsAndConditionsUrl
  */
 class UsAppToPersonInstance extends InstanceResource
 {
@@ -64,7 +67,7 @@ class UsAppToPersonInstance extends InstanceResource
      * @param string $messagingServiceSid The SID of the [Messaging Service](https://www.twilio.com/docs/messaging/api/service-resource) to create the resources from.
      * @param string $sid The SID of the US A2P Compliance resource to delete `QE2c6890da8086d771620e9b13fadeba0b`.
      */
-    public function __construct(Version $version, array $payload, string $messagingServiceSid, string $sid = null)
+    public function __construct(Version $version, array $payload, string $messagingServiceSid, ?string $sid = null)
     {
         parent::__construct($version);
 
@@ -98,6 +101,8 @@ class UsAppToPersonInstance extends InstanceResource
             'url' => Values::array_get($payload, 'url'),
             'mock' => Values::array_get($payload, 'mock'),
             'errors' => Values::array_get($payload, 'errors'),
+            'privacyPolicyUrl' => Values::array_get($payload, 'privacy_policy_url'),
+            'termsAndConditionsUrl' => Values::array_get($payload, 'terms_and_conditions_url'),
         ];
 
         $this->solution = ['messagingServiceSid' => $messagingServiceSid, 'sid' => $sid ?: $this->properties['sid'], ];
@@ -137,13 +142,14 @@ class UsAppToPersonInstance extends InstanceResource
     /**
      * Fetch the UsAppToPersonInstance
      *
+     * @param array|Options $options Optional Arguments
      * @return UsAppToPersonInstance Fetched UsAppToPersonInstance
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function fetch(): UsAppToPersonInstance
+    public function fetch(array $options = []): UsAppToPersonInstance
     {
 
-        return $this->proxy()->fetch();
+        return $this->proxy()->fetch($options);
     }
 
     /**
@@ -156,13 +162,14 @@ class UsAppToPersonInstance extends InstanceResource
      * @param string $description A short description of what this SMS campaign does. Min length: 40 characters. Max length: 4096 characters.
      * @param bool $ageGated A boolean that specifies whether campaign requires age gate for federally legal content.
      * @param bool $directLending A boolean that specifies whether campaign allows direct lending or not.
+     * @param array|Options $options Optional Arguments
      * @return UsAppToPersonInstance Updated UsAppToPersonInstance
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function update(bool $hasEmbeddedLinks, bool $hasEmbeddedPhone, array $messageSamples, string $messageFlow, string $description, bool $ageGated, bool $directLending): UsAppToPersonInstance
+    public function update(bool $hasEmbeddedLinks, bool $hasEmbeddedPhone, array $messageSamples, string $messageFlow, string $description, bool $ageGated, bool $directLending, array $options = []): UsAppToPersonInstance
     {
 
-        return $this->proxy()->update($hasEmbeddedLinks, $hasEmbeddedPhone, $messageSamples, $messageFlow, $description, $ageGated, $directLending);
+        return $this->proxy()->update($hasEmbeddedLinks, $hasEmbeddedPhone, $messageSamples, $messageFlow, $description, $ageGated, $directLending, $options);
     }
 
     /**

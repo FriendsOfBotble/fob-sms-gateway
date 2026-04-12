@@ -21,6 +21,8 @@ use Twilio\ListResource;
 use Twilio\Options;
 use Twilio\Values;
 use Twilio\Version;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 
 
 class FeedbackList extends ListResource
@@ -55,6 +57,26 @@ class FeedbackList extends ListResource
     }
 
     /**
+     * Helper function for Create
+     *
+     * @param array|Options $options Optional Arguments
+     * @return Response Created Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _create(array $options = []): Response
+    {
+        $options = new Values($options);
+
+        $data = Values::of([
+            'Outcome' =>
+                $options['outcome'],
+        ]);
+
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "create");
+    }
+
+    /**
      * Create the FeedbackInstance
      *
      * @param array|Options $options Optional Arguments
@@ -63,22 +85,36 @@ class FeedbackList extends ListResource
      */
     public function create(array $options = []): FeedbackInstance
     {
-
-        $options = new Values($options);
-
-        $data = Values::of([
-            'Outcome' =>
-                $options['outcome'],
-        ]);
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->create('POST', $this->uri, [], $data, $headers);
-
+        $response = $this->_create($options);
         return new FeedbackInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['accountSid'],
             $this->solution['messageSid']
+        );
+        
+    }
+
+    /**
+     * Create the FeedbackInstance with Metadata
+     *
+     * @param array|Options $options Optional Arguments
+     * @return ResourceMetadata The Created Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function createWithMetadata(array $options = []): ResourceMetadata
+    {
+        $response = $this->_create($options);
+        $resource = new FeedbackInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['accountSid'],
+                        $this->solution['messageSid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 

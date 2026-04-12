@@ -23,20 +23,26 @@ use Twilio\Options;
 use Twilio\Values;
 use Twilio\Version;
 use Twilio\InstanceContext;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 use Twilio\Serialize;
 use Twilio\Rest\FlexApi\V1\Interaction\InteractionChannel\InteractionChannelParticipantList;
 use Twilio\Rest\FlexApi\V1\Interaction\InteractionChannel\InteractionChannelInviteList;
+use Twilio\Rest\FlexApi\V1\Interaction\InteractionChannel\InteractionTransferList;
 
 
 /**
  * @property InteractionChannelParticipantList $participants
  * @property InteractionChannelInviteList $invites
+ * @property InteractionTransferList $transfers
+ * @method \Twilio\Rest\FlexApi\V1\Interaction\InteractionChannel\InteractionTransferContext transfers(string $sid)
  * @method \Twilio\Rest\FlexApi\V1\Interaction\InteractionChannel\InteractionChannelParticipantContext participants(string $sid)
  */
 class InteractionChannelContext extends InstanceContext
     {
     protected $_participants;
     protected $_invites;
+    protected $_transfers;
 
     /**
      * Initialize the InteractionChannelContext
@@ -66,6 +72,18 @@ class InteractionChannelContext extends InstanceContext
     }
 
     /**
+     * Helper function for Fetch
+     *
+     * @return Response Fetched Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _fetch(): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('GET', $this->uri, [], [], $headers, "fetch");
+    }
+
+    /**
      * Fetch the InteractionChannelInstance
      *
      * @return InteractionChannelInstance Fetched InteractionChannelInstance
@@ -73,18 +91,61 @@ class InteractionChannelContext extends InstanceContext
      */
     public function fetch(): InteractionChannelInstance
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->fetch('GET', $this->uri, [], [], $headers);
-
+        $response = $this->_fetch();
         return new InteractionChannelInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['interactionSid'],
             $this->solution['sid']
         );
+        
     }
 
+    /**
+     * Fetch the InteractionChannelInstance with Metadata
+     *
+     * @return ResourceMetadata The Fetched Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function fetchWithMetadata(): ResourceMetadata
+    {
+        $response = $this->_fetch();
+        $resource = new InteractionChannelInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['interactionSid'],
+                        $this->solution['sid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
+        );
+    }
+
+
+    /**
+     * Helper function for Update
+     *
+     * @param string $status
+     * @param array|Options $options Optional Arguments
+     * @return Response Updated Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _update(string $status, array $options = []): Response
+    {
+        $options = new Values($options);
+
+        $data = Values::of([
+            'Status' =>
+                $status,
+            'Routing' =>
+                Serialize::jsonObject($options['routing']),
+        ]);
+
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "update");
+    }
 
     /**
      * Update the InteractionChannelInstance
@@ -96,24 +157,37 @@ class InteractionChannelContext extends InstanceContext
      */
     public function update(string $status, array $options = []): InteractionChannelInstance
     {
-
-        $options = new Values($options);
-
-        $data = Values::of([
-            'Status' =>
-                $status,
-            'Routing' =>
-                Serialize::jsonObject($options['routing']),
-        ]);
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->update('POST', $this->uri, [], $data, $headers);
-
+        $response = $this->_update( $status, $options);
         return new InteractionChannelInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['interactionSid'],
             $this->solution['sid']
+        );
+        
+    }
+
+    /**
+     * Update the InteractionChannelInstance with Metadata
+     *
+     * @param string $status
+     * @param array|Options $options Optional Arguments
+     * @return ResourceMetadata The Updated Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function updateWithMetadata(string $status, array $options = []): ResourceMetadata
+    {
+        $response = $this->_update( $status, $options);
+        $resource = new InteractionChannelInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['interactionSid'],
+                        $this->solution['sid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 
@@ -148,6 +222,22 @@ class InteractionChannelContext extends InstanceContext
         }
 
         return $this->_invites;
+    }
+
+    /**
+     * Access the transfers
+     */
+    protected function getTransfers(): InteractionTransferList
+    {
+        if (!$this->_transfers) {
+            $this->_transfers = new InteractionTransferList(
+                $this->version,
+                $this->solution['interactionSid'],
+                $this->solution['sid']
+            );
+        }
+
+        return $this->_transfers;
     }
 
     /**

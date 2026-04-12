@@ -23,21 +23,23 @@ use Twilio\Options;
 use Twilio\Values;
 use Twilio\Version;
 use Twilio\InstanceContext;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 use Twilio\Serialize;
-use Twilio\Rest\Proxy\V1\Service\Session\ParticipantList;
 use Twilio\Rest\Proxy\V1\Service\Session\InteractionList;
+use Twilio\Rest\Proxy\V1\Service\Session\ParticipantList;
 
 
 /**
- * @property ParticipantList $participants
  * @property InteractionList $interactions
+ * @property ParticipantList $participants
  * @method \Twilio\Rest\Proxy\V1\Service\Session\InteractionContext interactions(string $sid)
  * @method \Twilio\Rest\Proxy\V1\Service\Session\ParticipantContext participants(string $sid)
  */
 class SessionContext extends InstanceContext
     {
-    protected $_participants;
     protected $_interactions;
+    protected $_participants;
 
     /**
      * Initialize the SessionContext
@@ -67,6 +69,18 @@ class SessionContext extends InstanceContext
     }
 
     /**
+     * Helper function for Delete
+     *
+     * @return Response Deleted Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _delete(): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
+        return $this->version->handleRequest('DELETE', $this->uri, [], [], $headers, "delete");
+    }
+
+    /**
      * Delete the SessionInstance
      *
      * @return bool True if delete succeeds, false otherwise
@@ -74,11 +88,40 @@ class SessionContext extends InstanceContext
      */
     public function delete(): bool
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        return $this->version->delete('DELETE', $this->uri, [], [], $headers);
+        $response = $this->_delete();
+        
+        return true;
     }
 
+    /**
+     * Delete the SessionInstance with Metadata
+     *
+     * @return ResourceMetadata The Deleted Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function deleteWithMetadata(): ResourceMetadata
+    {
+        $response = $this->_delete();
+        
+        return new ResourceMetadata(
+            null,
+            $response->getStatusCode(),
+            $response->getHeaders()
+        );
+    }
+
+
+    /**
+     * Helper function for Fetch
+     *
+     * @return Response Fetched Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _fetch(): Response
+    {
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('GET', $this->uri, [], [], $headers, "fetch");
+    }
 
     /**
      * Fetch the SessionInstance
@@ -88,29 +131,48 @@ class SessionContext extends InstanceContext
      */
     public function fetch(): SessionInstance
     {
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->fetch('GET', $this->uri, [], [], $headers);
-
+        $response = $this->_fetch();
         return new SessionInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['serviceSid'],
             $this->solution['sid']
+        );
+        
+    }
+
+    /**
+     * Fetch the SessionInstance with Metadata
+     *
+     * @return ResourceMetadata The Fetched Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function fetchWithMetadata(): ResourceMetadata
+    {
+        $response = $this->_fetch();
+        $resource = new SessionInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['serviceSid'],
+                        $this->solution['sid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 
 
     /**
-     * Update the SessionInstance
+     * Helper function for Update
      *
      * @param array|Options $options Optional Arguments
-     * @return SessionInstance Updated SessionInstance
+     * @return Response Updated Response
      * @throws TwilioException When an HTTP error occurs.
      */
-    public function update(array $options = []): SessionInstance
+    private function _update(array $options = []): Response
     {
-
         $options = new Values($options);
 
         $data = Values::of([
@@ -122,33 +184,52 @@ class SessionContext extends InstanceContext
                 $options['status'],
         ]);
 
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->update('POST', $this->uri, [], $data, $headers);
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "update");
+    }
 
+    /**
+     * Update the SessionInstance
+     *
+     * @param array|Options $options Optional Arguments
+     * @return SessionInstance Updated SessionInstance
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function update(array $options = []): SessionInstance
+    {
+        $response = $this->_update($options);
         return new SessionInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['serviceSid'],
             $this->solution['sid']
         );
+        
     }
-
 
     /**
-     * Access the participants
+     * Update the SessionInstance with Metadata
+     *
+     * @param array|Options $options Optional Arguments
+     * @return ResourceMetadata The Updated Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
      */
-    protected function getParticipants(): ParticipantList
+    public function updateWithMetadata(array $options = []): ResourceMetadata
     {
-        if (!$this->_participants) {
-            $this->_participants = new ParticipantList(
-                $this->version,
-                $this->solution['serviceSid'],
-                $this->solution['sid']
-            );
-        }
-
-        return $this->_participants;
+        $response = $this->_update($options);
+        $resource = new SessionInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['serviceSid'],
+                        $this->solution['sid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
+        );
     }
+
 
     /**
      * Access the interactions
@@ -164,6 +245,22 @@ class SessionContext extends InstanceContext
         }
 
         return $this->_interactions;
+    }
+
+    /**
+     * Access the participants
+     */
+    protected function getParticipants(): ParticipantList
+    {
+        if (!$this->_participants) {
+            $this->_participants = new ParticipantList(
+                $this->version,
+                $this->solution['serviceSid'],
+                $this->solution['sid']
+            );
+        }
+
+        return $this->_participants;
     }
 
     /**

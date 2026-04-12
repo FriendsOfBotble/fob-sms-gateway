@@ -21,6 +21,8 @@ use Twilio\ListResource;
 use Twilio\Options;
 use Twilio\Values;
 use Twilio\Version;
+use Twilio\Http\Response;
+use Twilio\Metadata\ResourceMetadata;
 
 
 class NotificationList extends ListResource
@@ -61,6 +63,26 @@ class NotificationList extends ListResource
     }
 
     /**
+     * Helper function for Create
+     *
+     * @param array|Options $options Optional Arguments
+     * @return Response Created Response
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    private function _create(array $options = []): Response
+    {
+        $options = new Values($options);
+
+        $data = Values::of([
+            'Ttl' =>
+                $options['ttl'],
+        ]);
+
+        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json' ]);
+        return $this->version->handleRequest('POST', $this->uri, [], $data, $headers, "create");
+    }
+
+    /**
      * Create the NotificationInstance
      *
      * @param array|Options $options Optional Arguments
@@ -69,23 +91,38 @@ class NotificationList extends ListResource
      */
     public function create(array $options = []): NotificationInstance
     {
-
-        $options = new Values($options);
-
-        $data = Values::of([
-            'Ttl' =>
-                $options['ttl'],
-        ]);
-
-        $headers = Values::of(['Content-Type' => 'application/x-www-form-urlencoded' ]);
-        $payload = $this->version->create('POST', $this->uri, [], $data, $headers);
-
+        $response = $this->_create($options);
         return new NotificationInstance(
             $this->version,
-            $payload,
+            $response->getContent(),
             $this->solution['serviceSid'],
             $this->solution['identity'],
             $this->solution['challengeSid']
+        );
+        
+    }
+
+    /**
+     * Create the NotificationInstance with Metadata
+     *
+     * @param array|Options $options Optional Arguments
+     * @return ResourceMetadata The Created Resource with Metadata
+     * @throws TwilioException When an HTTP error occurs.
+     */
+    public function createWithMetadata(array $options = []): ResourceMetadata
+    {
+        $response = $this->_create($options);
+        $resource = new NotificationInstance(
+                        $this->version,
+                        $response->getContent(),
+                        $this->solution['serviceSid'],
+                        $this->solution['identity'],
+                        $this->solution['challengeSid']
+                    );
+        return new ResourceMetadata(
+            $resource,
+            $response->getStatusCode(),
+            $response->getHeaders()
         );
     }
 
